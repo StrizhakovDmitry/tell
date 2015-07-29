@@ -1,0 +1,32 @@
+﻿<?php
+session_start();
+	if (isset ($_SESSION['admin'])){}
+	else {header('location:auth.php');}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="list.css">
+<link rel="stylesheet" type="text/css" href="calendar/tcal.css">
+<script type="text/javascript" src="calendar/tcal.js"></script>
+<script type="text/javascript" src="/jquery-2.1.0.min.js"></script>
+<script src="list.js"></script>
+</head>
+<body>
+<?php require_once 'menu.html';?>
+<table>
+<tbody>
+<tr>
+<td>Сотрудник</td><td>Проект</td><td>Жалоба</td><td>Телефон</td><td>От</td><td>До</td><td>Номер в базе</td>
+</tr>
+<tr>
+<td id="emp"></td><td id="proj"></td><td id="top"></td><td id="tel"><input maxlength="10" id="sel_tel"></input></td><td id ="start"><input id="start_sel" type="text" name="date" class="tcal" value="" /></td><td id="end"><input id="end_sel" type="text" name="date" class="tcal" value="" /></td><td id="id"><input maxlength="5" id="id_sel" type="text" value="0"></input></td>
+</tr>
+</tbody>
+</table>
+<br>
+<button id="list_button">Показать записи</button>
+<br><br>
+<div id="list"></div>
+</body>
+</html>

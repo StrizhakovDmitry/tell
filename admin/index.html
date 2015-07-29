@@ -1,0 +1,214 @@
+﻿<?php	session_start();
+	if (isset ($_SESSION['admin'])){}
+	else {header('location:auth.php');}?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Управление учётными записями
+</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles2.css">
+<script type="text/javascript">
+function delUser(id)
+	{
+	var ajax = new XMLHttpRequest ();
+	var link = "disabledacc.php?id="+id;
+	ajax.open ("GET", link, false);
+	ajax.send(null);
+	ajax.onreadystatechange = showLogins();
+	}
+function delpasswindow()
+	{
+	var elem = document.getElementById('cpassw');
+	elem.parentNode.removeChild(elem);
+	}
+function cpassAjax()
+	{
+	var id = document.getElementById('cpassw').sqlrowid;
+	var ajax = new XMLHttpRequest ();
+	var pass = document.getElementById('inppass').value;
+	var link = "changepass.php?id="+id+"&newpass="+pass;
+	//alert (link);
+	ajax.open ("GET", link, false);
+	ajax.send(null);
+	ajax.onreadystatechange = showLogins();
+	delpasswindow();
+	}
+	
+function changepass(login,id)
+	{
+	if (document.getElementById('cpassw'))
+		{
+		return false;
+		}
+	var cpassw = document.createElement('div');
+	cpassw.className = "cpassw";
+	cpassw.id = "cpassw";
+	cpassw.sqlrowid = id;
+	document.body.appendChild(cpassw);
+	var table = document.createElement('div');
+	table.className = "table";
+	cpassw.appendChild(table);
+	for (var i = 0;i < 3; i++)
+		{
+		var tr = document.createElement('div');
+		tr.className = "tr";
+		tr.id = "passtr"+i;
+		table.appendChild(tr);
+		var td = document.createElement('div')
+		td.className = "td";
+		td.id = "passtd"+i;
+		tr.appendChild(td);
+		}
+	var cpasstext = document.createElement('span');
+	cpasstext.innerHTML="сменить пароль для "+login+" ?";
+	document.getElementById("passtd0").appendChild(cpasstext);
+	var inppass = document.createElement('input');
+	inppass.id = "inppass";
+	document.getElementById("passtd1").appendChild(inppass);
+	var buttonESC = document.createElement('button');
+	buttonESC.id = "cpassesc";
+	buttonESC.innerHTML = "отмена";
+	buttonESC.onclick = function(){delpasswindow()};
+	document.getElementById("passtd2").appendChild(buttonESC);
+	var buttonOK = document.createElement('button');
+	buttonOK.id = "cpassok";
+	buttonOK.innerHTML = "да";
+	document.getElementById("passtd2").appendChild(buttonOK);
+	buttonOK.onclick = function() {cpassAjax()};
+	}
+function addUser ()
+	{
+	function cheklogin(login)
+		{
+		var loginarray = $("div[id^='sellogin']");
+		for (var i=0;i<loginarray.length;i++)
+			{
+			if (loginarray[i].innerHTML == login) {return loginarray[i].innerHTML}; 
+
+			}
+		}
+
+	
+
+	var log = document.getElementById('add_log').value;
+	var pass = document.getElementById('add_pass').value;
+	var name = document.getElementById('add_name').value;
+	var city = document.getElementById('add_city').value;
+	if (cheklogin(log)){alert ("Пользователь с логином "+log+" уже есть !");return false};
+	var ajax = new XMLHttpRequest ();
+	var link = "addlogin.php?login="+log+"&pass="+pass+"&name="+name+"&city="+city;
+	ajax.open ("GET", link, false);
+	ajax.send(null);
+	ajax.onreadystatechange = showLogins(); 
+	}
+function showLogins()
+	{
+	var ajax = new XMLHttpRequest ();
+	var link = "select.php";
+	ajax.open ("GET", link, false);
+	ajax.send(null);
+	ajax.onreadystatechange = showResult(); 
+	function showResult() 
+		{
+		var mass = ajax.responseText;
+		var a = JSON.parse(mass);
+		var loginlist = document.getElementById('loginlist');
+		var strings = a.length;
+		loginlist.innerHTML="";
+		var string = document.createElement('div');
+		string.className="tr_sel";
+		loginlist.appendChild(string);
+		var login = document.createElement('div');
+		login.id = "sellogin";
+		login.className="td_sel";
+		login.innerHTML = "Логин";
+		string.appendChild(login);
+		var password = document.createElement('div');
+		password.id = "selpassword";
+		password.className="td_sel";
+		password.innerHTML = "Пароль";
+		string.appendChild(password);
+		var name = document.createElement('div');
+		name.id = "selname";
+		name.className="td_sel";
+		name.innerHTML = "Имя";
+		string.appendChild(name);
+		var city = document.createElement('div');
+		city.id = "selcity";
+		city.className="td_sel";
+		city.innerHTML = "Город";
+		string.appendChild(city);
+		var del = document.createElement('div');
+		del.id = "seldel";
+		del.className="td_sel";
+		del.innerHTML = "X";
+		string.appendChild(del);
+		for (var i = 0; i < strings;i++)
+			{
+			var string = document.createElement('div');
+			string.id = "selStr_"+i;
+			string.className="tr_sel";
+			loginlist.appendChild(string);
+			/*var id = document.createElement('div');
+			id.id = "selid_"+i;
+			id.className="td_sel";
+			id.innerHTML = a[i].id;
+			string.appendChild(id);*/
+			var login = document.createElement('div');
+			login.id = "sellogin_"+i;
+			login.className="td_sel";
+			login.innerHTML = a[i].login;
+			string.appendChild(login);
+			var password = document.createElement('div');
+			password.sqlrowid = a[i].id;
+			password.sqlname = a[i].login;
+			password.ondblclick = function(){changepass(this.sqlname,this.sqlrowid)}
+			password.id = "selpassword_"+i;
+			password.className="td_sel pass";
+			password.innerHTML = a[i].password;
+			string.appendChild(password);
+			var name = document.createElement('div');
+			name.id = "selname_"+i;
+			name.className="td_sel";
+			name.innerHTML = a[i].name;
+			string.appendChild(name);
+			var city = document.createElement('div');
+			city.id = "selcity_"+i;
+			city.className="td_sel";
+			city.innerHTML = a[i].city;
+			string.appendChild(city);
+			var del = document.createElement('div');
+			del.id = a[i].id;
+			del.className="td_sel";
+			string.appendChild(del);
+			var delImg = document.createElement('img');
+			delImg.id = a[i].id;
+			delImg.src="../img/delete.png";
+			del.appendChild(delImg);
+			del.onclick = function(){delUser(this.id)};
+			}
+		}
+	}
+$(function(){showLogins()});
+</script>
+</head>
+<body>
+<?php require_once 'menu.html';?>
+<div>
+<input id="add_log" type="text" placeholder="Логин" size="12">
+<input id="add_pass" type="text" placeholder="Пароль" size="12">
+<input id="add_name" type="text" placeholder="ФИО" size="12">
+<select id="add_city">
+  <option value="1">Новосибирск</option>
+  <option value="2">Екатеринбург</option>
+<select>
+<button onclick="addUser ()">Создать запись</button>
+</div>
+<br>
+
+<div class="table_sel" id = "loginlist"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿<?php
+require_once 'check.php';
+?>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="..//scripts.js"></script>
+<script type="text/javascript">
+$(function(){createProjectsList();ShowReports()});
+</script>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<table id="mainpanel"><tbody>
+	<tr><td colspan="3"><?php $a = $_SESSION['name'];echo "вы зашли как ".$a;?></td></tr>
+
+	<tr>
+		<td class="td" id="projects"></td>
+		<td class="td" id="topics"></td>
+		<td class="td" id="tel_num"><input id="tel" type="text" placeholder="телефон" maxlength="10" size="10"></input></td>
+	</tr>
+<tr><td  colspan="3">Коментарий</td></tr>
+<td colspan="3">
+<textarea id="comment"   rows="3"></textarea>
+</td>
+</tr>
+</tbody></table>
+<button onclick="reportCall()">Сохранить</button>
+<div id = "reports"class="table"></div>
+</body>
+</html>

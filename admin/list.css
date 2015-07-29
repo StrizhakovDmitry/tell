@@ -1,0 +1,20 @@
+table, th, td 
+{
+
+border-style:solid;
+border-color:black;
+border-width:2px;
+border-collapse:collapse;
+}
+table
+	{
+	width:100%;
+	}
+.tab1 
+{
+height:200px;
+}
+.tab2
+{
+height:7cm;
+}

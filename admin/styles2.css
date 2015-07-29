@@ -1,0 +1,78 @@
+html
+	{
+	//background-image: url(../img/walls.com.ua_38575.jpg);
+	//color:#D2873B;
+	}
+#cpassesc
+	{
+	margin-left:45px;
+	height:30px;
+	width:80px;
+	}
+#cpassok
+	{
+	margin-left:10px;
+	height:30px;
+	width:80px;
+	}
+#passtr0
+	{
+	text-align:center;	
+	}
+#passtr1
+	{
+	text-align:center;	
+	}
+.table
+	{
+	
+	width:100%;
+	display: table;	
+	}
+.tr
+	{
+	
+	display: table-row;
+	}
+.td
+	{
+	display: table-cell;
+	}
+.table_sel
+	{
+
+
+	width:600px;
+	border-spacing:0px;
+	display: table;
+	border:solid black 1px;
+	}
+.tr_sel
+	{
+	
+	display: table-row;
+	}
+.td_sel
+	{
+	padding-left:3px;
+	padding-right:3px;
+	border:solid black 1px;
+	display: table-cell;
+	}
+.cpassw
+	{
+	width:300px;
+	height:170px;
+	background-color:RGB(255,255,255);
+	border-radius:15px;
+	border:solid black 3px;
+	position:fixed;
+	left: 50%; 
+	top: 200px;
+	//margin-top: 100px;
+	margin-left: -150px;
+	}
+.pass:hover
+	{
+	cursor: pointer;
+	}
